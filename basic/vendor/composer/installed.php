@@ -1,11 +1,11 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => '2.0.43',
-        'version' => '2.0.43.0',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => NULL,
+        'reference' => 'ce7078d61d5dcbf148b088c4e4f0035431719a1c',
         'name' => 'yiisoft/yii2-app-basic',
         'dev' => true,
     ),
@@ -265,6 +265,18 @@
             'reference' => 'bae7c545bef187884426f042434e561ab1ddb182',
             'dev_requirement' => true,
         ),
+        'php-http/async-client-implementation' => array(
+            'dev_requirement' => false,
+            'provided' => array(
+                0 => '*',
+            ),
+        ),
+        'php-http/client-implementation' => array(
+            'dev_requirement' => false,
+            'provided' => array(
+                0 => '*',
+            ),
+        ),
         'phpdocumentor/reflection-common' => array(
             'pretty_version' => '2.2.0',
             'version' => '2.2.0.0',
@@ -371,7 +383,7 @@
             'install_path' => __DIR__ . '/../psr/container',
             'aliases' => array(),
             'reference' => '8622567409010282b7aeebe4bb841fe98b58dcaf',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'psr/event-dispatcher' => array(
             'pretty_version' => '1.0.0',
@@ -384,6 +396,12 @@
         ),
         'psr/event-dispatcher-implementation' => array(
             'dev_requirement' => true,
+            'provided' => array(
+                0 => '1.0',
+            ),
+        ),
+        'psr/http-client-implementation' => array(
+            'dev_requirement' => false,
             'provided' => array(
                 0 => '1.0',
             ),
@@ -417,6 +435,15 @@
             'provided' => array(
                 0 => '1.0',
             ),
+        ),
+        'psr/log' => array(
+            'pretty_version' => '1.1.4',
+            'version' => '1.1.4.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../psr/log',
+            'aliases' => array(),
+            'reference' => 'd49695b909c3b7628b6289db5479a1c204601f11',
+            'dev_requirement' => false,
         ),
         'psr/log-implementation' => array(
             'dev_requirement' => true,
@@ -551,13 +578,13 @@
             'dev_requirement' => false,
         ),
         'symfony/browser-kit' => array(
-            'pretty_version' => 'v4.2.4',
-            'version' => '4.2.4.0',
+            'pretty_version' => 'v5.3.4',
+            'version' => '5.3.4.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/browser-kit',
             'aliases' => array(),
-            'reference' => '61d85c5af2fc058014c7c89504c3944e73a086f0',
-            'dev_requirement' => true,
+            'reference' => 'c1e3f64fcc631c96e2c5843b666db66679ced11c',
+            'dev_requirement' => false,
         ),
         'symfony/console' => array(
             'pretty_version' => 'v5.3.6',
@@ -584,7 +611,7 @@
             'install_path' => __DIR__ . '/../symfony/deprecation-contracts',
             'aliases' => array(),
             'reference' => '5f38c8804a9e97d23e0c8d63341088cd8a22d627',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'symfony/dom-crawler' => array(
             'pretty_version' => 'v4.4.27',
@@ -593,7 +620,7 @@
             'install_path' => __DIR__ . '/../symfony/dom-crawler',
             'aliases' => array(),
             'reference' => '86aa075c9e0b13ac7db8d73d1f9d8b656143881a',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'symfony/event-dispatcher' => array(
             'pretty_version' => 'v5.3.4',
@@ -628,6 +655,30 @@
             'reference' => '17f50e06018baec41551a71a15731287dbaab186',
             'dev_requirement' => true,
         ),
+        'symfony/http-client' => array(
+            'pretty_version' => 'v5.3.4',
+            'version' => '5.3.4.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/http-client',
+            'aliases' => array(),
+            'reference' => '67c177d4df8601d9a71f9d615c52171c98d22d74',
+            'dev_requirement' => false,
+        ),
+        'symfony/http-client-contracts' => array(
+            'pretty_version' => 'v2.4.0',
+            'version' => '2.4.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/http-client-contracts',
+            'aliases' => array(),
+            'reference' => '7e82f6084d7cae521a75ef2cb5c9457bbda785f4',
+            'dev_requirement' => false,
+        ),
+        'symfony/http-client-implementation' => array(
+            'dev_requirement' => false,
+            'provided' => array(
+                0 => '2.4',
+            ),
+        ),
         'symfony/polyfill-ctype' => array(
             'pretty_version' => 'v1.23.0',
             'version' => '1.23.0.0',
@@ -635,7 +686,7 @@
             'install_path' => __DIR__ . '/../symfony/polyfill-ctype',
             'aliases' => array(),
             'reference' => '46cd95797e9df938fdd2b03693b5fca5e64b01ce',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'symfony/polyfill-iconv' => array(
             'pretty_version' => 'v1.23.0',
@@ -698,7 +749,7 @@
             'install_path' => __DIR__ . '/../symfony/polyfill-php73',
             'aliases' => array(),
             'reference' => 'fba8933c384d6476ab14fb7b8526e5287ca7e010',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'symfony/polyfill-php80' => array(
             'pretty_version' => 'v1.23.1',
@@ -707,7 +758,7 @@
             'install_path' => __DIR__ . '/../symfony/polyfill-php80',
             'aliases' => array(),
             'reference' => '1100343ed1a92e3a38f9ae122fc0eb21602547be',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'symfony/service-contracts' => array(
             'pretty_version' => 'v2.4.0',
@@ -716,7 +767,7 @@
             'install_path' => __DIR__ . '/../symfony/service-contracts',
             'aliases' => array(),
             'reference' => 'f040a30e04b57fbcc9c6cbcf4dbaa96bd318b9bb',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'symfony/string' => array(
             'pretty_version' => 'v5.3.3',
@@ -764,12 +815,12 @@
             'dev_requirement' => false,
         ),
         'yiisoft/yii2-app-basic' => array(
-            'pretty_version' => '2.0.43',
-            'version' => '2.0.43.0',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => NULL,
+            'reference' => 'ce7078d61d5dcbf148b088c4e4f0035431719a1c',
             'dev_requirement' => false,
         ),
         'yiisoft/yii2-bootstrap4' => array(
