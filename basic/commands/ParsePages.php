@@ -2,19 +2,42 @@
 
 namespace app\commands;
 
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+
 use Yii;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\BrowserKit\HttpBrowser;
 use Exception;
-use yii\console\Controller;
 
 /**
  * ContactForm is the model behind the contact form.
  */
-class ParsePages extends Controller {
+class ParsePages extends Command {
+
+    protected function configure()
+    {
+        $this
+            ->setName('ParsePages:update')
+            ->setDescription('Parsing princetonreview site for highschool');
+    }
+
+    /**
+     * @throws \yii\db\Exception
+     */
+    public function execute(InputInterface $input, OutputInterface $output)
+    {
+        self::updateDBRows();
+    }
+
     private static $parseUrl = 'https://www.princetonreview.com/college-search?ceid=cp-1022984&page=';
 
+    /**
+     * Get score all pages with high schools
+     * @return int
+     */
     private function getNumberOfPages() {
 //        $numberOfPages = 1;
 
@@ -30,9 +53,17 @@ class ParsePages extends Controller {
             $numberOfPages = $numberOfPages[0];
         }
 
-        return $numberOfPages;
+        return (int)$numberOfPages;
     }
 
+    /**
+     * Get all highschool data from site
+     * @return array ['identity'] identifier of page from cite for this highschool
+     *               ['name'] name hightschool
+     *               ['city'] city where this hightschool work
+     *               ['state'] state where this highschool work
+     *               ['img_src'] url with preview page highschool
+     */
     private function parseAllPages() {
         $numberOfPages = self::getNumberOfPages();
 
@@ -86,6 +117,7 @@ class ParsePages extends Controller {
     }
 
     /**
+     * Update all db entries with data of high school
      * @throws \yii\db\Exception
      */
     public function updateDBRows() {
