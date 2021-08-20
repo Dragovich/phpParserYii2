@@ -14,11 +14,21 @@ $page = 'https://www.princetonreview.com/college-search?ceid=cp-1022984&page=';
 $highSchool = [];
 
 $browser = new HttpBrowser(HttpClient::create());
+$crawler = $browser->request('GET', $page . '1');
+$numberOfPages = 1;
 
-for ($i = 1; $i <= 2; $i++) {
+$numberOfPages = $crawler->filter('#filtersForm')->children()->last()->filter('div')->last()->filter('div')->each(function (Crawler $node) {
+    $paginator = explode(' ', $node->text());
+    return $paginator[3];
+});
+
+if (is_array($numberOfPages)) {
+    $numberOfPages = $numberOfPages[0];
+}
+
+for ($i = 1; $i <= $numberOfPages; $i++) {
     $pageRequest = $page . $i;
     $crawler = $browser->request('GET', $pageRequest);
-    $_COOKIE['page'] = $i;
     $highSchoolFromPage = $crawler->filter('.row .vertical-padding')->each(function (Crawler $node) {
         try {
             $img_src = $node->filter('img');
@@ -59,8 +69,8 @@ for ($i = 1; $i <= 2; $i++) {
     $highSchool = array_merge($highSchool, $highSchoolFromPage);
 }
 echo '<pre>';
-var_dump($highSchool);
 var_dump(count($highSchool));
+var_dump($highSchool);
 echo '</pre>';
 
 
