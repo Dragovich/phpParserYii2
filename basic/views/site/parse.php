@@ -21,35 +21,46 @@ for ($i = 1; $i <= 2; $i++) {
     $_COOKIE['page'] = $i;
     $highSchoolFromPage = $crawler->filter('.row .vertical-padding')->each(function (Crawler $node) {
         try {
-            $name = $node->filter('.margin-top-none')->text();
+            $img_src = $node->filter('img');
 
-            try {
-                $location = explode(', ', $node->filter('.location')->text());
+            $name = $node->filter('.margin-top-none')->text('');
+            $location = $node->filter('.location')->text('');
+
+            if ($location !== '') {
+                $location = explode(', ', $location);
                 $city = $location[0];
                 $state = $location[1];
-            } catch (Exception $e) {
+            } else {
                 $city = '';
                 $state = '';
             }
 
-            $src = $node->filterXPath('//img')->extract(['src']);
+            $link = $node->filter('.margin-top-none > a')->attr('href');
+            $identity = str_replace('/college/', '', $link);
+            $identity = substr($identity, 0, strpos($identity, "?"));
+
+            try {
+                $img_src = $img_src->attr('src');
+            } catch (Exception $e) {
+                $img_src = '';
+            }
 
             return [
+                'identity' => $identity,
                 'name' => $name,
                 'city' => $city,
                 'state' => $state,
-                'src' => $src
+                'img_src' => $img_src,
             ];
         } catch (Exception $e) {
             return [];
         }
     });
     $highSchool = array_merge($highSchool, $highSchoolFromPage);
-//    $highSchool += $highSchoolFromPage;
 }
 echo '<pre>';
-var_dump(count($highSchoolFromPage));
-var_dump($highSchoolFromPage);
+var_dump($highSchool);
+var_dump(count($highSchool));
 echo '</pre>';
 
 
