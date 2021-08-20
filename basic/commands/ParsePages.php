@@ -16,8 +16,7 @@ use Exception;
  * ContactForm is the model behind the contact form.
  */
 class ParsePages extends Command {
-
-    protected function configure()
+    public function configure()
     {
         $this
             ->setName('ParsePages:update')
@@ -29,16 +28,23 @@ class ParsePages extends Command {
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        self::updateDBRows();
+        self::removeDBRows();
+        self::insertDBRows();
     }
 
-    private static $parseUrl = 'https://www.princetonreview.com/college-search?ceid=cp-1022984&page=';
+    public function start()
+    {
+        self::removeDBRows();
+        self::insertDBRows();
+    }
+
+    public static $parseUrl = 'https://www.princetonreview.com/college-search?ceid=cp-1022984&page=';
 
     /**
      * Get score all pages with high schools
      * @return int
      */
-    private function getNumberOfPages() {
+    public function getNumberOfPages() {
 //        $numberOfPages = 1;
 
         $browser = new HttpBrowser(HttpClient::create());
@@ -63,10 +69,11 @@ class ParsePages extends Command {
      *               ['city'] city where this hightschool work
      *               ['state'] state where this highschool work
      *               ['img_src'] url with preview page highschool
+     * @throws \yii\db\Exception
      */
-    private function parseAllPages() {
+    public function parseAllPages() {
         $numberOfPages = self::getNumberOfPages();
-
+//        $numberOfPages = 1;
         $highSchool = [];
 
         for ($i = 1; $i <= $numberOfPages; $i++) {
@@ -113,6 +120,8 @@ class ParsePages extends Command {
             $highSchool = array_merge($highSchool, $highSchoolFromPage);
         }
 
+        ParseSchoolDescription::parseAllDescriptions($highSchool);
+
         return $highSchool;
     }
 
@@ -120,7 +129,7 @@ class ParsePages extends Command {
      * Update all db entries with data of high school
      * @throws \yii\db\Exception
      */
-    public function updateDBRows() {
+    public function insertDBRows() {
         $data = self::parseAllPages();
 
         foreach ($data as $key => $highSchool) {
@@ -135,5 +144,12 @@ class ParsePages extends Command {
         }
 
         return true;
+    }
+
+    /**
+     * @throws \yii\db\Exception
+     */
+    public function removeDBRows() {
+        Yii::$app->db->createCommand('DELETE FROM parser_schools')->execute();
     }
 }
