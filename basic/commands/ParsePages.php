@@ -16,8 +16,7 @@ use Exception;
  * ContactForm is the model behind the contact form.
  */
 class ParsePages extends Command {
-    public function configure()
-    {
+    public function configure() {
         $this
             ->setName('ParsePages:update')
             ->setDescription('Parsing princetonreview site for highschool');
@@ -26,16 +25,17 @@ class ParsePages extends Command {
     /**
      * @throws \yii\db\Exception
      */
-    public function execute(InputInterface $input, OutputInterface $output)
-    {
+    public function execute(InputInterface $input, OutputInterface $output) {
         self::removeDBRows();
-        self::insertDBRows();
+        self::parseAllPages();
     }
 
-    public function start()
-    {
+    /**
+     * @throws \yii\db\Exception
+     */
+    public function start() {
         self::removeDBRows();
-        self::insertDBRows();
+        self::parseAllPages();
     }
 
     public static $parseUrl = 'https://www.princetonreview.com/college-search?ceid=cp-1022984&page=';
@@ -73,9 +73,8 @@ class ParsePages extends Command {
      */
     public function parseAllPages() {
         $numberOfPages = self::getNumberOfPages();
-//        $numberOfPages = 1;
-        $highSchool = [];
-
+//        $numberOfPages = 74;
+        ParseSchoolDescription::removeDBRows();
         for ($i = 1; $i <= $numberOfPages; $i++) {
             $pageRequest = self::$parseUrl . $i;
             $browser = new HttpBrowser(HttpClient::create());
@@ -117,22 +116,21 @@ class ParsePages extends Command {
                     return [];
                 }
             });
-            $highSchool = array_merge($highSchool, $highSchoolFromPage);
+            self::insertDBRows($highSchoolFromPage);
+            ParseSchoolDescription::parseAllDescriptions($highSchoolFromPage);
         }
 
-        ParseSchoolDescription::parseAllDescriptions($highSchool);
+//        ParseSchoolDescription::parseAllDescriptions($highSchool);
 
-        return $highSchool;
+        return true;
     }
 
     /**
      * Update all db entries with data of high school
      * @throws \yii\db\Exception
      */
-    public function insertDBRows() {
-        $data = self::parseAllPages();
-
-        foreach ($data as $key => $highSchool) {
+    public function insertDBRows($schoolData) {
+        foreach ($schoolData as $key => $highSchool) {
             Yii::$app->db->createCommand()->insert('parser_schools',
                 [
                     'identity' => $highSchool['identity'],

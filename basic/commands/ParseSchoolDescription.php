@@ -26,13 +26,19 @@ class ParseSchoolDescription extends Command {
      */
     public function parseAllDescriptions($infoAboutSchool) {
         $browser = new HttpBrowser(HttpClient::create());
-        $info = [];
 
         foreach ($infoAboutSchool as $key => $school) {
             $crawler = $browser->request('GET', self::$descriptionPage . $school['identity']);
             $name = $crawler->filter('.school-headline > span')->text();
             $contact = $crawler->filter('.school-contacts > div')->first()->filter('div')->filter('.col-sm-9')->filter('.row');
-            $site = $crawler->filter('.school-headline-address > div > a')->attr('href');
+            $siteTag = $crawler->filter('.school-headline-address > div > a');
+
+            try {
+                $site = $siteTag->attr('href');
+            } catch (\Exception $e) {
+                $site = '';
+            }
+
             $address = '';
             $telephone = '';
 
@@ -61,18 +67,15 @@ class ParseSchoolDescription extends Command {
             }
 
             $description = [
-                'identity' => '',
+                'identity' => $school['identity'],
                 'name' => $name,
                 'address' => $address,
                 'telephone' => $telephone,
                 'site' => $site,
             ];
 
-            $info = array_merge($info, $description);
+            self::insertDBRows($description);
         }
-
-        self::removeDBRows();
-        self::insertDBRows($info);
 
         return true;
     }
@@ -83,17 +86,16 @@ class ParseSchoolDescription extends Command {
      * @throws \yii\db\Exception
      */
     public function insertDBRows($info) {
-        foreach ($info as $key => $highSchool) {
-            var_dump($highSchool);
-            Yii::$app->db->createCommand()->insert('parser_schools_description',
-                [
-                    'identity' => '',
-                    'name' => $highSchool['name'],
-                    'address' => $highSchool['address'],
-                    'telephone' => $highSchool['telephone'],
-                    'site' => $highSchool['site']
-                ])->execute();
-        }
+//        foreach ($info as $key => $highSchool) {
+        Yii::$app->db->createCommand()->insert('parser_schools_description',
+            [
+                'identity' => $info['identity'],
+                'name' => $info['name'],
+                'address' => $info['address'],
+                'telephone' => $info['telephone'],
+                'site' => $info['site']
+            ])->execute();
+//        }
 
         return true;
     }
