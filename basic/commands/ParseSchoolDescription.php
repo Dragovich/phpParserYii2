@@ -56,10 +56,10 @@ class ParseSchoolDescription extends Command {
             foreach ($contactData as $key => $someInterestingData) {
                 if (!is_null($someInterestingData)) {
                     foreach ($someInterestingData as $key2 => $value) {
-                        if ($key == 'address') {
+                        if ($key2 == 'address') {
                             $address = $value;
                         }
-                        if ($key = 'telephone') {
+                        if ($key2 = 'telephone') {
                             $telephone = $value;
                         }
                     }
