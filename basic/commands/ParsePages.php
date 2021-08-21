@@ -16,20 +16,6 @@ use Exception;
  * ContactForm is the model behind the contact form.
  */
 class ParsePages extends Command {
-    public function configure() {
-        $this
-            ->setName('ParsePages:update')
-            ->setDescription('Parsing princetonreview site for highschool');
-    }
-
-    /**
-     * @throws \yii\db\Exception
-     */
-    public function execute(InputInterface $input, OutputInterface $output) {
-        self::removeDBRows();
-        self::parseAllPages();
-    }
-
     /**
      * @throws \yii\db\Exception
      */
@@ -73,7 +59,7 @@ class ParsePages extends Command {
      */
     public function parseAllPages() {
         $numberOfPages = self::getNumberOfPages();
-//        $numberOfPages = 74;
+//        $numberOfPages = 1;
         ParseSchoolDescription::removeDBRows();
         for ($i = 1; $i <= $numberOfPages; $i++) {
             $pageRequest = self::$parseUrl . $i;
@@ -119,8 +105,6 @@ class ParsePages extends Command {
             self::insertDBRows($highSchoolFromPage);
             ParseSchoolDescription::parseAllDescriptions($highSchoolFromPage);
         }
-
-//        ParseSchoolDescription::parseAllDescriptions($highSchool);
 
         return true;
     }
